@@ -41,7 +41,7 @@ N_QUERY            = 10_000     # 论文: 10,000 query
 TOP_K              = 100
 EMBED_MODEL        = "NovaSearch/stella_en_1.5B_v5"
 EMBED_DIM          = 1024
-BATCH_SIZE         = 32         # RTX 3090 + Stella 1.5B fp16 安全值
+BATCH_SIZE         = 64         # RTX 3090 + Stella 1.5B fp16 安全值
 RANDOM_SEED        = 42
 MAX_PARA           = None       # 设 None 使用全量；调试时可设为 50000
 
