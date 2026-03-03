@@ -41,7 +41,7 @@ N_QUERY            = 10_000     # 论文: 10,000 query
 TOP_K              = 100
 EMBED_MODEL        = "NovaSearch/stella_en_1.5B_v5"
 EMBED_DIM          = 1024
-BATCH_SIZE         = 64         # RTX 3090 + Stella 1.5B fp16 安全值
+BATCH_SIZE         = 32         # RTX 3090 + Stella 1.5B fp16 安全值
 RANDOM_SEED        = 42
 MAX_PARA           = None       # 设 None 使用全量；调试时可设为 50000
 
@@ -148,7 +148,9 @@ def encode_texts(texts: list, model, tokenizer, device,
 
         with torch.no_grad():
             outputs = model(**inputs)
-            vecs = outputs.last_hidden_state[:, 0, :]  # (B, D)
+            vecs = outputs.last_hidden_state[:, 0, :]  # (B, hidden)
+            # Stella Matryoshka: 截取前 embed_dim 维
+            vecs = vecs[:, :embed_dim]
 
         mm[start:end] = vecs.cpu().float().numpy()
         torch.cuda.empty_cache()
